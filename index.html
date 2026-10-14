@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Piadas da Clara</title>
+  <style>
+    :root {
+      --bg: #fff4e6;
+      --card: #ffffff;
+      --text: #3a2a1a;
+      --accent: #ff6b9d;
+      --accent-dark: #e0457c;
+      --muted: #8a7563;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #2a1f2d;
+        --card: #3a2c3f;
+        --text: #fbeff5;
+        --accent: #ff7aa8;
+        --accent-dark: #ff4d8d;
+        --muted: #c9b3c2;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Comic Sans MS", "Chalkboard SE", "Segoe UI", system-ui, sans-serif;
+    }
+    main {
+      width: 100%;
+      max-width: 560px;
+      text-align: center;
+    }
+    h1 {
+      font-size: clamp(2rem, 7vw, 3rem);
+      margin: 0 0 8px;
+    }
+    .sub {
+      color: var(--muted);
+      margin: 0 0 28px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 24px;
+      padding: 32px 24px;
+      min-height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(1.2rem, 4.5vw, 1.6rem);
+      line-height: 1.4;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      margin-bottom: 28px;
+    }
+    .card.pop { animation: pop 0.35s ease; }
+    @keyframes pop {
+      0% { transform: scale(0.92); opacity: 0.3; }
+      70% { transform: scale(1.03); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    button {
+      font: inherit;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 999px;
+      padding: 16px 36px;
+      cursor: pointer;
+      box-shadow: 0 6px 0 var(--accent-dark);
+      transition: transform 0.08s, box-shadow 0.08s;
+    }
+    button:hover { filter: brightness(1.05); }
+    button:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 var(--accent-dark);
+    }
+    .count {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>😂 Piadas da Clara 😂</h1>
+    <p class="sub">Carrega no botão e prepara-te para rir!</p>
+
+    <div id="joke" class="card" aria-live="polite">Pronta para uma piada?</div>
+
+    <button id="btn" type="button">Conta uma piada! 🎲</button>
+    <p id="count" class="count"></p>
+  </main>
+
+  <script>
+    const jokes = [
+      "A Clara é tão aborrecida que adormece as ovelhas. 🐑💤",
+      "A Clara é tão lenta que o caracol lhe pediu para se despachar. 🐌",
+      "A Clara é tão dorminhoca que até o despertador desistiu dela. ⏰",
+      "A Clara é tão gulosa que o frigorífico tranca-se quando ela chega. 🍫",
+      "A Clara fala tanto que o papagaio pediu férias. 🦜",
+      "A Clara é tão desarrumada que o quarto dela tem código postal próprio. 📦",
+      "A Clara é tão alta que cumprimenta os pássaros sem saltar. 🐦",
+      "A Clara é tão baixinha que joga às escondidas atrás de um lápis. ✏️",
+      "A Clara demora tanto no banho que os peixes vêm pedir boleia. 🐟",
+      "A Clara é tão esquecida que uma vez se esqueceu de se esquecer. 🤔",
+      "A Clara canta tão alto no chuveiro que os vizinhos aplaudem. 🎤",
+      "A Clara é tão teimosa que até o GPS diz \"está bem, vai por aí\". 🗺️",
+      "A Clara come tão devagar que o jantar fica para o pequeno-almoço. 🍝",
+      "A Clara é tão friorenta que veste casaco no verão e os pinguins acham exagerado. 🐧",
+      "A Clara ri tanto que as cócegas lhe pedem autógrafos. 🤣",
+      "A Clara é tão preguiçosa que manda o eco responder por ela. 📢",
+      "A Clara é tão rápida a comer gelado que o gelado nem tem tempo de derreter. 🍦",
+      "A Clara faz caretas tão boas que os espelhos pedem para repetir. 🪞",
+      "A Clara é tão curiosa que o gato veio pedir-lhe conselhos. 🐱",
+      "A Clara é tão barulhenta a dormir que os ursos acham que é hibernação. 🐻",
+      "A Clara perde tantas meias que a máquina de lavar já desistiu de contar. 🧦",
+      "A Clara é tão dramática que até a novela pede menos drama. 🎭",
+      "A Clara é tão boa a esconder-se que ainda ninguém a encontrou desde 2019. 🙈",
+      "A Clara é tão doce que as abelhas fazem fila à porta dela. 🐝"
+    ];
+
+    const jokeEl = document.getElementById("joke");
+    const btn = document.getElementById("btn");
+    const countEl = document.getElementById("count");
+    let last = -1;
+    let told = 0;
+
+    btn.addEventListener("click", () => {
+      let i;
+      do {
+        i = Math.floor(Math.random() * jokes.length);
+      } while (i === last && jokes.length > 1);
+      last = i;
+      told++;
+
+      jokeEl.textContent = jokes[i];
+      jokeEl.classList.remove("pop");
+      void jokeEl.offsetWidth; // reinicia a animação
+      jokeEl.classList.add("pop");
+
+      countEl.textContent = `Piadas contadas: ${told}`;
+    });
+  </script>
+</body>
+</html>
