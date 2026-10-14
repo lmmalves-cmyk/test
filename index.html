@@ -35,6 +35,15 @@
       color: var(--text);
       font-family: "Comic Sans MS", "Chalkboard SE", "Segoe UI", system-ui, sans-serif;
     }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: url("clara-cartoon.jpg") center 30% / cover no-repeat;
+      opacity: 0.35;
+    }
+    main { position: relative; }
     main {
       width: 100%;
       max-width: 560px;
@@ -63,7 +72,7 @@
     }
     .card.pop { animation: pop 0.35s ease; }
     @keyframes pop {
-      0% { transform: scale(0.92); opacity: 0.3; }
+      0% { transform: scale(0.92); opacity: 0.35; }
       70% { transform: scale(1.03); opacity: 1; }
       100% { transform: scale(1); }
     }
